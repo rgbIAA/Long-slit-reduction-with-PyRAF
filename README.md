@@ -28,7 +28,7 @@ For IRAF/PyRAF I recommend the [astroconda](https://astroconda.readthedocs.io/en
 
 * "long_slit_reduction_with_PyRAF.py": logical sequence of reduction steps 
 
-* "data" directory: additional files used in the reductioin for the tutorial (except the FITS files)
+* "data" directory: additional files used in the tutorial for the reduction examples (except the FITS files)
 
 # Instructions
 
@@ -36,4 +36,4 @@ Put "relspyraf.py" in the same directory of "long_slit_reduction_with_PyRAF.py" 
 
 Browse "long_slit_reduction_with_PyRAF.py" to be familiar with the reduction process and change accordingly to your needs. You can also modify "relspyraf.py" to include some more functionalities or new functions. 
 
-This is a standard easy reduction. There might be additional steps that your observations require not included in this steps (e.g. illumination correction)
+This is an example of a standard (easy) reduction. There might be additional steps required by your observations not included in this tutorial (e.g. illumination correction)

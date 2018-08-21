@@ -20,4 +20,4 @@ The tutorial require these packages to be installed in order to run:
 + IRAF/PyRAF
 
 For IRAF/PyRAF I recommend the [astroconda](https://astroconda.readthedocs.io/en/latest/) package (with [astroconda with PyRAF
-](https://astroconda.readthedocs.io/en/latest/installation.html#legacy-software-stack-with-iraf)
+](https://astroconda.readthedocs.io/en/latest/installation.html#legacy-software-stack-with-iraf))

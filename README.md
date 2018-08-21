@@ -30,7 +30,7 @@ For IRAF/PyRAF I recommend the [astroconda](https://astroconda.readthedocs.io/en
    * "nightlog_2005-07-08.txt": log file of the observations used in the tutorial
    * "lapalma_extinction.dat": Extinction file of [Roque de los Muchachos Observatory](http://www.ing.iac.es/Astronomy/observing/conditions/wlext.html)
    * "standards.men": config file for IRAF "standard" & "sensfunc"
-   * "mbd25d4655.dat" and "mbd33d2642.dat": Standard stars calibration files (from ESO: ftp://ftp.eso.org/pub/stecf/standards/okestan/))
+   * "mbd25d4655.dat" and "mbd33d2642.dat": Standard stars calibration files (from ESO: ftp://ftp.eso.org/pub/stecf/standards/okestan/)
 
 
 # Instructions

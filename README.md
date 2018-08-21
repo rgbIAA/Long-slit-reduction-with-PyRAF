@@ -5,9 +5,9 @@ This is a tutorial example for the introductory course "Long-slit reduction with
 
 Author: Ruben Garcia-Benito (RGB)
 
-The file "nightlog_2005-07-08.txt" is the example log file of observations for the tutorial. 
+The file "nightlog_2005-07-08.txt" is the log file example of the observations used in the tutorial. 
 
-The FITS files used in the tutorial are not included in this repository. 
+The FITS files used are not included in this repository. 
 
 The functions and scripts are meant to be adapted (rewritten) to your paticular circumstances.
 

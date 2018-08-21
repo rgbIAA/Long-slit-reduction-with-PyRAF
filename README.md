@@ -3,7 +3,7 @@ Long slit reduction with PyRAF
 
 This is a tutorial example for the introductory course "Long-slit reduction with PyRAF" given at the ["School on Long-Slit Spectroscopy"](https://sites.google.com/site/schoolonspectroscopy/home) at University of Rwanda from August 26th to September 1st of 2018.
 
-Author: Ruben Garcia-Benito (RGB)
+Author: Rubén García-Benito (RGB)
 
 The FITS files used are not included in this repository. 
 
@@ -30,7 +30,7 @@ For IRAF/PyRAF I recommend the [astroconda](https://astroconda.readthedocs.io/en
    * "nightlog_2005-07-08.txt": log file of the observations used in the tutorial
    * "lapalma_extinction.dat": Extinction file of [Roque de los Muchachos Observatory](http://www.ing.iac.es/Astronomy/observing/conditions/wlext.html)
    * "standards.men": config file for IRAF "standard" & "sensfunc"
-   * "mbd25d4655.dat" and "mbd33d2642.dat": Standard stars calibration files (from [ESO](ftp://ftp.eso.org/pub/stecf/standards/okestan/))
+   * "mbd25d4655.dat" and "mbd33d2642.dat": Standard stars calibration files (from ESO: ftp://ftp.eso.org/pub/stecf/standards/okestan/))
 
 
 # Instructions

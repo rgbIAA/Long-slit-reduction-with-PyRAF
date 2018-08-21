@@ -5,8 +5,6 @@ This is a tutorial example for the introductory course "Long-slit reduction with
 
 Author: Ruben Garcia-Benito (RGB)
 
-The file "nightlog_2005-07-08.txt" is the log file example of the observations used in the tutorial. 
-
 The FITS files used are not included in this repository. 
 
 The functions and scripts are meant to be adapted (rewritten) to your paticular circumstances.
@@ -29,6 +27,8 @@ For IRAF/PyRAF I recommend the [astroconda](https://astroconda.readthedocs.io/en
 * "long_slit_reduction_with_PyRAF.py": logical sequence of reduction steps 
 
 * "data" directory: additional files used in the tutorial for the reduction examples (except the FITS files)
+   * "nightlog_2005-07-08.txt": log file of the observations used in the tutorial
+
 
 # Instructions
 

@@ -21,3 +21,19 @@ The tutorial require these packages to be installed in order to run:
 
 For IRAF/PyRAF I recommend the [astroconda](https://astroconda.readthedocs.io/en/latest/) package (with [astroconda with PyRAF
 ](https://astroconda.readthedocs.io/en/latest/installation.html#legacy-software-stack-with-iraf))
+
+# Content
+
+* "relspyraf.py": container of the functions needed for reduction ("Reduce Long Slit Pyraf" module). Put it in the same directory of "long_slit_reduction_with_PyRAF.py" or in some of your "PYTHONPATH" directories
+
+* "long_slit_reduction_with_PyRAF.py": logical sequence of reduction steps 
+
+* "data" directory: additional files used in the reductioin for the tutorial (except the FITS files)
+
+# Instructions
+
+Put "relspyraf.py" in the same directory of "long_slit_reduction_with_PyRAF.py" or in some of your "PYTHONPATH" directories.
+
+Browse "long_slit_reduction_with_PyRAF.py" to be familiar with the reduction process and change accordingly to your needs. You can also modify "relspyraf.py" to include some more functionalities or new functions. 
+
+This is a standard easy reduction. There might be additional steps that your observations require not included in this steps (e.g. illumination correction)

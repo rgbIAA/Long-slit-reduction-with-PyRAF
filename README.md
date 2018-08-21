@@ -1,7 +1,7 @@
 # Long-slit-reduction-with-PyRAF
 Long slit reduction with PyRAF
 
-This is a tutorial example for the introductory course "Long-slit reduction with PyRAF" given at the ["School on Long-Slit Spectroscopy"](https://sites.google.com/site/schoolonspectroscopy/home) at University of Rwanda from August 26th to September 1st of 2018:
+This is a tutorial example for the introductory course "Long-slit reduction with PyRAF" given at the ["School on Long-Slit Spectroscopy"](https://sites.google.com/site/schoolonspectroscopy/home) at University of Rwanda from August 26th to September 1st of 2018.
 
 Author: Ruben Garcia-Benito (RGB)
 

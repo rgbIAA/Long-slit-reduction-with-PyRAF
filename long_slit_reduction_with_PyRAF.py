@@ -29,8 +29,7 @@ ltask = ['ccdproc','zerocombine','imstatistics','flatcombine','response',
 # ARC LAMPS in Blue ARM: CuNe+CUAR
 
 # Parameters ------------------------------------------------------------
-# Change your parameters according to your observations. "rdnoise" and "gain" are 
-# the only global parameters in this tutorial
+# Change your parameters according to your observations
 rdnoise = 4.0    
 gain    = 1.17
 

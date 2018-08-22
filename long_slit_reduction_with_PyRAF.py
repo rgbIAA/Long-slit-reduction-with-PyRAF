@@ -180,6 +180,7 @@ star_names = [dsens[std]['star_names'] for std in dsens]
 
 ## In case you have different sensitivity functions and want to combine them
 ## iraf.stsdas.toolbox.imgtools(_doprint=0)
+## from iraf import imcalc
 ##imcalc('sens1.fits,sens2.fits', 'sensfunc.fits', '(im1+im2)/2.')
 
 # ------------------------- Remove SKY (background) ------------------------

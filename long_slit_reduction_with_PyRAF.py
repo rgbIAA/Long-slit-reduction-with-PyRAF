@@ -24,14 +24,14 @@ ltask = ['ccdproc','zerocombine','imstatistics','flatcombine','response',
 # Dispersion [A/pix] = 0.45 (B) 
 # Spatial Resolution =  0.2 (arcsec/pixel)
 # Slit width = 1.''
-# GAIN_R2 = 1.17 [e-/ADU]
-# RDNOISE_R2 = 4.0 [e-]
+# GAIN_B = 1.16 [e-/ADU]
+# RDNOISE_B = 5.0 [e-]
 # ARC LAMPS in Blue ARM: CuNe+CUAR
 
 # Parameters ------------------------------------------------------------
 # Change your parameters according to your observations
-rdnoise = 4.0    
-gain    = 1.17
+rdnoise = 5.0    
+gain    = 1.16
 
 # Bias & Trim from header
 biassec = '[316:1201,4105:4190]'

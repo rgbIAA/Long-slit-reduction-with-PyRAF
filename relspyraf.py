@@ -78,8 +78,9 @@ def flatccdres(flat_files, flat='flat.fits', nflat='nflat.fits', cflat='cflat.fi
 	corder=5, rorder=18, readaxi='column', biassec=None, zero=None, trimsec=None, low_reject=3,
 	high_reject=3, scale='mode', rdnoise=0.0, gain=1.0, lflats=None, suffix=None):
 
-    unlearn('ccdproc')
     unlearn('flatcombine')
+    unlearn('ccdproc')
+    unlearn('response')
 
     delfiles(flat)
     if lflats is not None:
@@ -98,8 +99,9 @@ def flatccdres(flat_files, flat='flat.fits', nflat='nflat.fits', cflat='cflat.fi
     delfiles(nflat)
     response(cflat, cflat, nflat, interac=iresponse, order=rorder, low_reject=low_reject, high_reject=high_reject)
 
-    unlearn('ccdproc')
     unlearn('flatcombine')
+    unlearn('ccdproc')
+    unlearn('response')
 
 # ccdproc function  --------------------------------------------
 def ccdp(files, suffix=None, input_files='tmp_input.list', output_files='tmp_output.list', **kwargs):
@@ -207,10 +209,10 @@ def combine(lfits, outfits, rej='crreject', combine='average', scale='exposure',
     wfile(input_files, lfits, suffix=suffix, prefix=prefix)
     delfiles(outfits)
 
-    unlearn('combine')
+    unlearn('imcombine')
     imcombine('@'+input_files, output=outfits, combine=combine, reject=rej, scale=scale,
 		weight=weight, expname=expname, rdnoise=rdnoise, gain=gain, nlow=nlow)
-    unlearn('combine')
+    unlearn('imcombine')
 
     if delete_list:
         delfiles(input_files)

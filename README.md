@@ -22,6 +22,8 @@ For IRAF/PyRAF I recommend the [astroconda](https://astroconda.readthedocs.io/en
 
 # Content
 
+* "Long slit PyRAF reduction I - Rwanda 2018 - RGB.pdf" and "Long slit PyRAF reduction II - Rwanda 2018 - RGB.pdf" are the slides of the reduction tutorial given and the [School](https://sites.google.com/site/schoolonspectroscopy/home).
+
 * "relspyraf.py": container of the functions needed for reduction ("Reduce Long Slit Pyraf" module). Put it in the same directory of "long_slit_reduction_with_PyRAF.py" or in some of your "PYTHONPATH" directories
 
 * "long_slit_reduction_with_PyRAF.py": logical sequence of reduction steps 

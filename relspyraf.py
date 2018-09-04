@@ -24,7 +24,9 @@ from iraf import identify, reidentify, fitcoords, transform
 from iraf import standard, sensfunc, calibrate, setairmass
 # -------------------------------
 
+from astropy.io import fits as pyfits
 from glob import glob
+import astropy.table
 import numpy as np
 import astropy
 import os
@@ -37,7 +39,7 @@ import os
 
 # Check if object is list --------------------------------------
 def cklist(obj):
-    if not isinstance(obj, (list, tuple, np.ndarray, astropy.table.table.Column)):
+    if not isinstance(obj, (list, tuple, np.ndarray, astropy.table.table.Column)) and obj is not None:
         obj = [obj]
     return obj
 
@@ -65,18 +67,56 @@ def fmt_file(fmt, name):
     new_name = os.path.join(dirname, fmt % rname)
     return new_name
 
+# Change name of a list/array of files with a given format -----
+def fmt_files(names, fmt='%s', prefix=None, suffix=None, dirname=None):
+    if prefix is not None:
+        fmt = prefix + fmt
+    if suffix is not None:
+        fmt = fmt + suffix
+    if dirname is not None:
+        fmt = os.path.join(dirname, os.path.basename(fmt))
+    names = cklist(names)
+    new_names = [fmt % name for name in names]
+    return new_names
+
 # Unlearn list of functions ------------------------------------
 def unlearn_list(ltask):
     ltask = cklist(ltask)
     for task in ltask: 
         unlearn(task)
 
+# Extract HDU (chip) from a multi HDU fits ---------------------
+def extract_hdu(input_fits, outfits, extension, primary_header=True, exclude_primary='COMMENT', exclude=None, dkeys=None):
+    lhdu = pyfits.open(input_fits)
+    exclude = cklist(exclude)
+    exclude_primary = cklist(exclude_primary)
+    if (extension + 1) > len(lhdu):
+        print ('>>> Extension "%i" is larger than the number of HDUs [%i]' % (extension, len(lhdu)))
+        lhdu.close()
+        return 
+    hdu = lhdu[extension]
+    nhdu = pyfits.PrimaryHDU(data=hdu.data, header=hdu.header)
+    if exclude is not None:
+        for key in exclude:
+            if key in nhdu.header:
+                nhdu.header.remove(key)
+    if primary_header:
+        phdr = lhdu[0].header 
+        for key in phdr:
+            if (not key in nhdu.header) and (not key in exclude_primary):
+                nhdu.header.set(key, value=phdr[key], comment=phdr.comments[key])
+    lhdu.close()
+    if isinstance(dkeys, dict):
+        for key in dkeys:
+            nhdu.header[key] = dkeys[key]
+    nhdu.writeto(outfits, clobber=True)
+
 # Master flat --------------------------------------------------
 def flatccdres(flat_files, flat='flat.fits', nflat='nflat.fits', cflat='cflat.fits', iccd='no', iresponse='yes', 
 	combine='average', reject='avsigclip', ccdtype="", process='no', fixpix='no', overscan='yes', 
 	zerocor='yes', trim='yes', darkcor='no', flatcor='no', illumco='no', fringec='no', function='legendre', 
 	corder=5, rorder=18, readaxi='column', biassec=None, zero=None, trimsec=None, low_reject=3,
-	high_reject=3, scale='mode', rdnoise=0.0, gain=1.0, lflats=None, suffix=None):
+	high_reject=3, scale='mode', rdnoise=0.0, gain=1.0, lflats=None, prefix=None, suffix=None):
 
     unlearn('flatcombine')
     unlearn('ccdproc')
@@ -84,7 +124,7 @@ def flatccdres(flat_files, flat='flat.fits', nflat='nflat.fits', cflat='cflat.fi
 
     delfiles(flat)
     if lflats is not None:
-        wfile(flat_files, lflats, suffix=suffix)
+        wfile(flat_files, lflats, prefix=prefix, suffix=suffix)
 
     flatcombine('@'+flat_files, output=flat, combine=combine, reject=reject, ccdtype=ccdtype,
 	scale=scale, process=process, rdnoise=rdnoise, gain=gain)
@@ -104,7 +144,7 @@ def flatccdres(flat_files, flat='flat.fits', nflat='nflat.fits', cflat='cflat.fi
     unlearn('response')
 
 # ccdproc function  --------------------------------------------
-def ccdp(files, suffix=None, input_files='tmp_input.list', output_files='tmp_output.list', **kwargs):
+def ccdp(files, prefix=None, suffix=None, input_files='tmp_input.list', output_files='tmp_output.list', fmt_out='c%s', **kwargs):
 
     # Dictionary with default parameters for ccdproc
     dpar = dict(ccdtype="", fixpix='no', overscan='yes', trim='yes', zerocor='yes', flatcor='no', darkcor='no',
@@ -118,10 +158,10 @@ def ccdp(files, suffix=None, input_files='tmp_input.list', output_files='tmp_out
     files = cklist(files)
 
     # Write the list of input files to a temporary file
-    wfile(input_files, files, suffix=suffix)
+    wfile(input_files, files, prefix=prefix, suffix=suffix)
 
     # Create a list of names with the output name after ccdproc is applied
-    new_files_ccdproc = ['c%s' % item for item in files]
+    new_files_ccdproc = [fmt_out % item for item in files]
     # Write the new files list to a file
     wfile(output_files, new_files_ccdproc)
 
@@ -171,8 +211,8 @@ def wlsolution(arc, arc_ref=None, iden=True, reiden=True, section="middle column
     unlearn_list(lw_tasks)
 
 # Apply Wavelength solution ------------------------------------
-def transf(lfits, fitnames, interp='linear', database='database', flux='yes', y1='INDEF', suffix=None,
-           input_files='tmp_input.list', output_files='tmp_output.list', dispaxis=None, **kwargs):
+def transf(lfits, fitnames, interp='linear', database='database', flux='yes', y1='INDEF', prefix=None, suffix=None,
+           input_files='tmp_input.list', output_files='tmp_output.list', fmt_out='l%s', dispaxis=None, **kwargs):
 
     fitnames = '.'.join(fitnames.split('.')[0:-1])
 
@@ -181,9 +221,9 @@ def transf(lfits, fitnames, interp='linear', database='database', flux='yes', y1
         lfits = np.loadtxt(input_files, dtype=np.str, unpack=True)
     else:
         lfits = cklist(lfits)
-        wfile(input_files, lfits, suffix=suffix)
+        wfile(input_files, lfits, prefix=prefix, suffix=suffix)
 
-    wfits = ['l%s' % fits.split('[')[0] for fits in lfits]
+    wfits = [fmt_out % fits.split('[')[0] for fits in lfits]
     wfile(output_files, wfits)
     delfiles(wfits)
 
@@ -245,10 +285,10 @@ def rmcosmic(lfits, xorder=5, yorder=5, sigfrac=2.0, niter=5, objlim=2, sigclip=
     unlearn('lacos_spec')
 
 # Set airmass in images ----------------------------------------
-def setair(files, observatory='lapalma', equinox='EPOCH', ut='UTSTART', input_files='tmp_input.list'):
+def setair(files, observatory='lapalma', equinox='EPOCH', ut='UTSTART', input_files='tmp_input.list', prefix=None, suffix=None):
 
     files = cklist(files)
-    wfile(input_files, files)
+    wfile(input_files, files, prefix=prefix, suffix=suffix)
 
     unlearn('setairmass')
     setairmass(images='@'+input_files, observatory=observatory, equinox=equinox, ut=ut)
@@ -387,8 +427,8 @@ def back(fits, outfits=None, fmt='b%s', **kwargs):
     unlearn('background')
 
 # Apply flux calibration (sensitivity) -------------------------
-def calflux(lfits, sensitivity='sensfunc.fits', extinction="lapalma_extinction.dat",
-            observatory='lapalma', extinct='yes', outfits=None, fmt_out='cf%s',
+def calflux(lfits, sensitivity='sensfunc.fits', extinction="lapalma_extinction.dat", observatory='lapalma', 
+            extinct='yes', outfits=None, fmt_out='cf%s', prefix=None, suffix=None,
             in_files='tmp_in.list', out_files='tmp_out.list'):
 
     lfits = cklist(lfits)
@@ -398,7 +438,7 @@ def calflux(lfits, sensitivity='sensfunc.fits', extinction="lapalma_extinction.d
 
     delfiles(outfits)
 
-    wfile(in_files, lfits)
+    wfile(in_files, lfits, prefix=prefix, suffix=suffix)
     wfile(out_files, outfits)
 
     unlearn('calibrate')
